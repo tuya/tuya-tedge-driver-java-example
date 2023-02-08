@@ -5,9 +5,9 @@
 * Use IntelliJ IDEA build the project
 
 ## 发布镜像
-* 环境准备：`docker buildx create --name mybuilder`，`docker buildx use mybuilder`
+* 环境准备：安装 docker
 * 打包并发布：`./script/dockerbuild.sh v1.0.0`
-* 镜像发布说明：`dockerbuild.sh` 该脚本会同时发布 x86、armv7 两种架构镜像
+* 镜像发布说明：`dockerbuild.sh`
 
 ## 说明
 * Tedge有两种运行模式：DP模型、物模型(TyLink)

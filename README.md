@@ -6,10 +6,8 @@
 
 ## Release image
 
-1. Prepare the environment: `docker buildx create --name mybuilder`, `docker buildx use mybuilder`
+1. Prepare the environment: install docker
 2. Package and release image: `./script/dockerbuild.sh v1.0.0`
-
-**Note**: Both x86 and ARMv7 images are released by the script`dockerbuild.sh`.
 
 ## Description
 * TEdge supports two running modes: DP model and things data model (TuyaLink)
