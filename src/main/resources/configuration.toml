@@ -1,0 +1,32 @@
+[Logger]
+    FileName = "/mnt/logs/driver.log"
+    LogLevel = "INFO"
+
+[Clients]
+    [Clients.MQTTBroker]
+        Address = "tcp://192.168.1.221:56301"
+        UseTLS = false
+        CertFilePath = ""
+    [Clients.Resource]
+    Address = "192.168.1.221:57001"
+    UseTLS = false
+    CertFilePath = ""
+
+[Service]
+    ID = "713459"
+    Name = "driver-java-exmaple-713459"
+    ProductList = []
+    GwId = ""
+    LocalKey = ""
+    Activated = false
+    [Service.Server]
+        Address = "0.0.0.0:33815"
+        UseTLS = false
+        CertFile = ""
+        KeyFile = ""
+
+[CustomConfig]
+    [CustomConfig.httpconf]
+        listen = ":9494"
+    [CustomConfig.mqtt]
+        username = "test_username"

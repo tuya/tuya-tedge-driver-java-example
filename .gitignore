@@ -1,0 +1,8 @@
+.idea
+.idea/*
+.target
+.DS_Store
+logs
+mnt
+target/*
+
