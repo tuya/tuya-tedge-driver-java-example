@@ -13,8 +13,8 @@
     CertFilePath = ""
 
 [Service]
-    ID = "713459"
-    Name = "driver-java-exmaple-713459"
+    ID = "029061"
+    Name = "driver-java-example-029061"
     ProductList = []
     GwId = ""
     LocalKey = ""

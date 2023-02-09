@@ -36,6 +36,16 @@ public class Main {
 
             //Step4: 基本功能示例: 获取配置文件，获取子设备，新增产品、子设备、上报子设备状态、上报DP
             driverImpl.run();
+
+            //容器退出清理资源
+            Runtime.getRuntime().addShutdownHook(new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    driverImpl.stop();
+                }
+            });
         } catch (Exception e) {
             PrintException.printStack(e);
         }
