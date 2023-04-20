@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-    <property name="LOG_HOME" value="./mnt/logs" />
+    <property name="LOG_HOME" value="/mnt/logs" />
     <property name="LOG_PATTERN" value="%date %level [%thread] [%file:%line] - %msg%n"/>
 
     <appender name="ROLLING-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

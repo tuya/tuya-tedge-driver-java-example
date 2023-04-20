@@ -137,16 +137,25 @@ public class DpDriverImpl implements DPModelDriver {
         this.getGatewayInfo();
 
         //7.测试key/value相关接口
-        String key1 = "Test_key1";
-        String value1 = "Test_value1";
-        String key2 = "Test_key2";
-        String value2 = "Test_value2";
-        this.testGetPutKV(key1, value1.getBytes());
-        this.testGetPutKV(key2, value2.getBytes());
-        this.testDeleteKV(key2);
+        String key1 = "TestKey1";
+        String value1 = "TestValue1";
+        String key2 = "TestKey2";
+        String value2 = "TestValue2";
+        this.testGetPutBackupKV(key1, value1.getBytes());
+        this.testGetPutBackupKV(key2, value2.getBytes());
+        this.testDeleteBackupKV(key2);
 
-        String[] keys = {key1, key2};
-        this.testAllKV(keys);
+        Map<String, byte[]> extendData = new HashMap<>();
+        extendData.put("TestKey3", "TestValue3".getBytes());
+        extendData.put("TestKey4", "TestValue4".getBytes());
+        this.testPutBackupKVs(extendData);
+
+        //
+        String[] getKeys = {"TestKey1", "TestKey3", "TestKey4"};
+        this.testGetBackupKVs(getKeys);
+
+        this.testGetBackupKVKeys("Test");
+        this.testQueryBackupKV("Test");
     }
 
     private void getCustomConfig() {
@@ -221,34 +230,63 @@ public class DpDriverImpl implements DPModelDriver {
         log.info("getGatewayInfo:{}", JSON.toJSONString(gatewayInfo));
     }
 
-    private void testGetPutKV(String key, byte[] value) {
-        byte[] value1 = this.sdk.GetKVOne(key);
+    //////////////////////////////////////////////////////////////////////////////////////////
+    private void testGetPutBackupKV(String key, byte[] value) {
+        byte[] value1 = this.sdk.GetBackupKVOne(key);
         if (value1 == null) {
-            Boolean ret = this.sdk.PutKVOne(key, value);
+            Boolean ret = this.sdk.PutBackupKVOne(key, value);
             String sValue = new String(value, StandardCharsets.UTF_8);
-            log.info("PutKVOne key:{}, value:{}, ret:{}", key, sValue, ret);
+            log.info("PutBackupKVOne key:{}, value:{}, ret:{}", key, sValue, ret);
         } else {
             String sValue1 = new String(value1, StandardCharsets.UTF_8);
-            log.info("GetKVOne key:{}, sValue1:{}", key, sValue1);
+            log.info("GetBackupKVOne key:{}, sValue1:{}", key, sValue1);
         }
     }
 
-    private void testDeleteKV(String key) {
+    private void testDeleteBackupKV(String key) {
         String[] keys = {key};
-        Boolean ret = this.sdk.DeleteKV(keys);
+        Boolean ret = this.sdk.DelBackupKV(keys);
         if (!ret) {
-            log.warn("DeleteKV key:{} fail", keys);
+            log.warn("DelBackupKV key:{} fail", keys);
         } else {
-            log.info("DeleteKV key:{} success", keys);
+            log.info("DelBackupKV key:{} success", keys);
         }
     }
 
-    private void testAllKV(String[] keys) {
-        Map<String, byte[]> result = this.sdk.GetKV(keys);
+    private void testPutBackupKVs(Map<String, byte[]> kvs) {
+        Boolean ret = this.sdk.PutBackupKV(kvs);
+        //String sValue = new String(value, StandardCharsets.UTF_8);
+        log.info("PutBackupKV kvs:{}, ret:{}", kvs, ret);
+    }
+
+    private void testGetBackupKVs(String[] keys) {
+        Map<String, byte[]> result = this.sdk.GetBackupKV(keys);
         if (result != null) {
             for (String key : result.keySet()) {
-                log.info("GetKV key:{}, value:{}", key, result.get(key));
+                String sValue = new String(result.get(key), StandardCharsets.UTF_8);
+                log.info("GetBackupKV key:{}, value:{}", key, sValue);
             }
+        }
+    }
+
+    private void testGetBackupKVKeys(String prefix) {
+        String[] result = this.sdk.GetBackupKVKeys(prefix);
+        if (result != null) {
+            for (String key : result) {
+                log.info("GetBackupKVKeys prefix:{} key:{}", prefix, key);
+            }
+        }
+    }
+
+    private void testQueryBackupKV(String prefix) {
+        Map<String, byte[]> result = this.sdk.QueryBackupKV(prefix);
+        if (result != null) {
+            for (String key : result.keySet()) {
+                String sValue = new String(result.get(key), StandardCharsets.UTF_8);
+                log.info("QueryBackupKV key:{}, value:{}", key, sValue);
+            }
+        } else {
+            log.info("QueryBackupKV prefix:{}, result is null", prefix);
         }
     }
 }
